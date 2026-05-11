@@ -1,4 +1,4 @@
-import { ArrowRight, Layers , Clock} from "lucide-react";
+import {ArrowRight, ArrowUpRight, Clock, Layers} from "lucide-react";
 import Navbar from "../../components/Navbar";
 import type { Route } from "./+types/home";
 import { Button } from "../../components/ui/Button";
@@ -47,39 +47,53 @@ export default function Home() {
 
       </div>
       </section>
+<section className="projects py-12">
+  <div className="section-inner max-w-7xl mx-auto px-4">
+    <div className="section-head mb-8">
+      <div className="copy">
+        <h2 className="text-3xl font-bold">Projects</h2>
+        <p className="text-slate-500">Your Latest work and shared community projects, all in one place</p>
+      </div>
+    </div>
 
-      <section className="projects">
-          <div className="section-inner">
-            <div className="section-head">
-                <div className="copy">
-                    <h2>Projects</h2>
-                    <p>Your Latest work and shared
-                      community projects, all in one place</p>
-                </div>
-            </div>
-            <div className="projects-grid">
-              <div className="project-card group">
-                <div className="preview"/>
-                  <img src="https://roomify-mlhuk267-dfwu1i.puter.site/projects/1770803585402/rendered.png"
-                  alt="Project"/>
-                  <div className="badge">
-                    <span>
-                      Community
-                    </span>
-                  </div>
-                </div>
-                <div className="card-body">
-                    <div>
-                      <h3>Project Manhattan</h3>
-                      <div>
-                        <Clock size={12} />
-                        <span>{new Date('01.01.2027').toLocaleDateString()}</span>
-                      </div>
-                    </div>
-                </div>
-                </div>
-          </div>
-      </section>
+    <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* --- Start Project Card --- */}
+     <div className="project-card group relative flex flex-col bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-sm transition-all hover:shadow-md">
+  
+  {/* Image Section */}
+  <div className="relative aspect-video w-full overflow-hidden">
+    <img 
+      src="https://roomify-mlhuk267-dfwu1i.puter.site/projects/1770803585402/rendered.png"
+      alt="Project"
+      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+    />
+    <div className="absolute top-4 left-4">
+      <span className="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] font-bold text-slate-800 shadow-sm uppercase tracking-wider">
+        Community
+      </span>
+    </div>
+  </div>
+
+  {/* Card Body */}
+  <div className="card-body">
+                                  <div>
+                                      <h3>Project Manhattan</h3>
+
+                                      <div className="meta">
+                                          <Clock size={12} />
+                                          <span>{new Date('01.01.2027').toLocaleDateString()}</span>
+                                          <span>By JS Mastery</span>
+                                      </div>
+                                  </div>
+                                  <div className="arrow">
+                                      <ArrowUpRight size={18} />
+                                  </div>
+                              </div>
+</div>
+      {/* --- End Project Card --- */}
+    </div>
+  </div>
+</section>
       </div>
 );
 }
