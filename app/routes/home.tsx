@@ -2,6 +2,8 @@ import {ArrowRight, ArrowUpRight, Clock, Layers} from "lucide-react";
 import Navbar from "../../components/Navbar";
 import type { Route } from "./+types/home";
 import { Button } from "../../components/ui/Button";
+import Upload from "../../components/Upload";
+import { useNavigate } from "react-router";
 
 
 export function meta({}: Route.MetaArgs) {
@@ -12,6 +14,19 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const navigate = useNavigate();
+
+  const handleComplete = async (base64Image: string) => {
+    const newId = Date.now().toString();
+    // Store the base64 image in localStorage (or you can use a more robust state management solution)
+    localStorage.setItem(`plot-${newId}`, base64Image);
+    // Navigate to the visualizer page with the new ID
+    navigate(`/visualizer/${newId}`);
+
+      return true;
+    
+  };
+
   return (
   <div className="home">
     <Navbar />
@@ -42,7 +57,7 @@ export default function Home() {
             </h3>
             <p>Supports JPG, PNG, formats up to 10MB</p>
           </div>
-          <p>Upload Images</p>
+          <Upload onComplete={handleComplete} />
         </div>
 
       </div>
