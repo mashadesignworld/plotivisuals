@@ -4,7 +4,7 @@ export const PUTER_WORKER_URL = import.meta.env.VITE_PUTER_WORKER_URL || "";
 export const STORAGE_PATHS = {
     ROOT: "plotivisuals",
     SOURCES: "plotivisuals/sources",
-    RENDERS: "plotivisuals /renders",
+    RENDERS: "plotivisuals/renders",
 } as const;
 
 // Timing Constants (in milliseconds)

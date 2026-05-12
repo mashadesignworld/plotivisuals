@@ -19,6 +19,11 @@ const Upload: React.FC<UploadProps> = ({ onComplete }) => {
         setFile(selectedFile);
         setProgress(0);
         const reader = new FileReader();
+        reader.onerror = () => {
+            setFile(null);
+            setProgress(0);
+            
+        };
         reader.onload = () => {
             const base64 = reader.result as string;
             const interval = setInterval(() => {
