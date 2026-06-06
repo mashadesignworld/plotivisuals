@@ -36,7 +36,11 @@ export default function Home() {
     }
     setProjects((prev) => [newItem, ...prev]);
     // Store the base64 image in localStorage (or you can use a more robust state management solution)
-    localStorage.setItem(`plot-${newId}`, base64Image);
+    try {
+      localStorage.setItem(`plot-${newId}`, base64Image);
+    } catch (error) {
+      console.warn("Could not cache image locally", error);
+    }
     // Navigate to the visualizer page with the new ID
     navigate(`/visualizer/${newId}`,{
       state: {
