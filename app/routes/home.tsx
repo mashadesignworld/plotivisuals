@@ -4,7 +4,8 @@ import type { Route } from "./+types/home";
 import { Button } from "../../components/ui/Button";
 import Upload from "../../components/Upload";
 import { useNavigate } from "react-router";
-
+import { useState } from "react";
+import {createProject} from "../../Lib/puter.action.ts"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,13 +16,35 @@ export function meta({}: Route.MetaArgs) {
 
 export default function Home() {
   const navigate = useNavigate();
+  const [projects,setProjects] = useState<DesignItem[]>([]);
 
   const handleComplete = async (base64Image: string) => {
     const newId = Date.now().toString();
+    const name = `Residence ${newId }`;
+
+    const newItem = {
+       id: newId, name, sourceImage: base64Image,
+       renderedImage: undefined,
+       timestamp: Date.now(), 
+    }
+
+    const saved = await createProject({ item: newItem, visibility: 'private'});
+
+    if(!saved) {
+      console.error("Failed to create project");
+      return false;
+    }
+    setProjects((prev) => [newItem, ...prev]);
     // Store the base64 image in localStorage (or you can use a more robust state management solution)
     localStorage.setItem(`plot-${newId}`, base64Image);
     // Navigate to the visualizer page with the new ID
-    navigate(`/visualizer/${newId}`);
+    navigate(`/visualizer/${newId}`,{
+      state: {
+        initialImage: saved.sourceImage,
+        initialRendered: saved.renderedImage || null,
+        name
+      }
+    });
 
       return true;
     
@@ -73,12 +96,13 @@ export default function Home() {
 
     <div className="projects-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* --- Start Project Card --- */}
-     <div className="project-card group relative flex flex-col bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-sm transition-all hover:shadow-md">
-  
-  {/* Image Section */}
+      {projects.map(({id, name, renderedImage, sourceImage, timestamp}) => {
+        return (
+          <div key={id} className="project-card group relative flex flex-col bg-white rounded-4xl overflow-hidden border border-slate-100 shadow-sm transition-all hover:shadow-md">
+    {/* Image Section */}
   <div className="relative aspect-video w-full overflow-hidden">
     <img 
-      src="https://roomify-mlhuk267-dfwu1i.puter.site/projects/1770803585402/rendered.png"
+      src={renderedImage || sourceImage}
       alt="Project"
       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
     />
@@ -88,15 +112,14 @@ export default function Home() {
       </span>
     </div>
   </div>
-
-  {/* Card Body */}
+   {/* Card Body */}
   <div className="card-body">
                                   <div>
-                                      <h3>Project Manhattan</h3>
+                                      <h3>{name}</h3>
 
                                       <div className="meta">
                                           <Clock size={12} />
-                                          <span>{new Date('01.01.2027').toLocaleDateString()}</span>
+                                          <span>{new Date(timestamp).toLocaleDateString()}</span>
                                           <span>By JS Mastery</span>
                                       </div>
                                   </div>
@@ -105,6 +128,11 @@ export default function Home() {
                                   </div>
                               </div>
 </div>
+        );
+})}
+   
+
+ 
       {/* --- End Project Card --- */}
     </div>
   </div>
